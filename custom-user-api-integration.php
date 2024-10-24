@@ -15,6 +15,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 define( 'SAUCAL_FABIO_MEZZOMO_VERSION', '1.0' );
 define( 'SAUCAL_FABIO_MEZZOMO_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 
+// Include necessary files
+require_once SAUCAL_FABIO_MEZZOMO_PLUGIN_DIR . 'includes/data-display.php';
+
 // Register WooCommerce account tab and endpoint
 function saucal_fabio_mezzomo_add_account_tab( $items ) {
     $new_items = array();
@@ -50,6 +53,6 @@ register_deactivation_hook( __FILE__, 'saucal_fabio_mezzomo_deactivate' );
 
 // Endpoint content
 function saucal_fabio_mezzomo_custom_data_content() {
-    echo '<h3>' . __( 'Custom Data', 'saucal-fabio-mezzomo' ) . '</h3>';
+    saucal_fabio_mezzomo_display_user_data();
 }
 add_action( 'woocommerce_account_custom-data-api_endpoint', 'saucal_fabio_mezzomo_custom_data_content' );
