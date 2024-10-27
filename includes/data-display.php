@@ -18,6 +18,11 @@ function saucal_fabio_mezzomo_display_user_data() {
     if ( isset($_POST['element_list']) ) {
         $element_list = sanitize_text_field($_POST['element_list']);
         $elements_array = explode( ',', $element_list );
-        //fetch_elements_from_api($elements_array);
+
+        if ( function_exists('fetch_elements_from_api') ) {
+            fetch_elements_from_api($elements_array);
+        } else {
+            echo "<p>Function fetch_elements_from_api not found.</p>";
+        }
     }
 }

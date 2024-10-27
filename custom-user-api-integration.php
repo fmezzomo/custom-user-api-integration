@@ -16,6 +16,7 @@ define( 'SAUCAL_FABIO_MEZZOMO_VERSION', '1.0' );
 define( 'SAUCAL_FABIO_MEZZOMO_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 
 // Include necessary files
+require_once SAUCAL_FABIO_MEZZOMO_PLUGIN_DIR . 'includes/api-handler.php';
 require_once SAUCAL_FABIO_MEZZOMO_PLUGIN_DIR . 'includes/data-display.php';
 
 // Register WooCommerce account tab and endpoint
@@ -45,7 +46,7 @@ function saucal_fabio_mezzomo_activate() {
 }
 register_activation_hook( __FILE__, 'saucal_fabio_mezzomo_activate' );
 
-// To make sure that the rewrite rules will be clean when deactivate
+// Clean rewrite rules when deactivating
 function saucal_fabio_mezzomo_deactivate() {
     flush_rewrite_rules();
 }
