@@ -4,31 +4,37 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-function fetch_elements_from_api( $elements ) {
-    // Example API URL, adjust as needed
-    $api_url = 'https://httpbin.org/post';
-    
-    // Prepare the data for the API request
-    $data = array(
-        'elements' => $elements,
-        'user_id'  => get_current_user_id(),
-    );
-    
-    // Make the API request using wp_remote_post or wp_remote_get
-    $response = wp_remote_post( $api_url, array(
-        'body' => json_encode($data),
-        'headers' => array(
-            'Content-Type' => 'application/json',
-        ),
-    ));
+class Saucal_Fabio_Mezzomo_API_Handler {
 
-    if ( is_wp_error( $response ) ) {
-        echo 'Error with the API request: ' . $response->get_error_message();
-        return;
+    private $api_url;
+
+    public function __construct() {
+        $this->api_url = 'https://httpbin.org/post';
     }
 
-    $body = wp_remote_retrieve_body( $response );
-    $result = json_decode( $body, true );
+    public function fetch_elements( $elements ) {
+        $data = array(
+            'elements' => $elements,
+            'user_id'  => get_current_user_id(),
+        );
 
-    return $result;
+        $response = wp_remote_post( $this->api_url, array(
+            'body' => json_encode( $data ),
+            'headers' => array(
+                'Content-Type' => 'application/json',
+            ),
+        ));
+
+        if ( is_wp_error( $response ) ) {
+            error_log( 'Erro na requisição da API: ' . $response->get_error_message() );
+            return null;
+        }
+
+        $body = wp_remote_retrieve_body( $response );
+        $result = json_decode( $body, true );
+
+        return $result;
+    }
 }
+
+$saucal_fabio_mezzomo_api_handler = new Saucal_Fabio_Mezzomo_API_Handler();

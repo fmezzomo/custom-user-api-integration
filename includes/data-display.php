@@ -30,16 +30,13 @@ class Saucal_Fabio_Mezzomo_Data_Display {
         $element_list = sanitize_text_field( $_POST['element_list'] );
         $elements_array = explode( ',', $element_list );
 
-        if ( function_exists( 'fetch_elements_from_api' ) ) {
-            $api_data = fetch_elements_from_api( $elements_array );
+        $api_handler = new Saucal_Fabio_Mezzomo_API_Handler();
+        $api_data = $api_handler->fetch_elements( $elements_array );
 
-            if ( $api_data ) {
-                echo '<pre>' . esc_html( print_r( $api_data, true ) ) . '</pre>';
-            } else {
-                echo '<p>' . __( 'No data available.', 'saucal-fabio-mezzomo' ) . '</p>';
-            }
+        if ( $api_data ) {
+            echo '<pre>' . esc_html( print_r( $api_data, true ) ) . '</pre>';
         } else {
-            echo '<p>' . __( 'Function fetch_elements_from_api not found.', 'saucal-fabio-mezzomo' ) . '</p>';
+            echo '<p>' . __( 'No data available.', 'saucal-fabio-mezzomo' ) . '</p>';
         }
     }
 
