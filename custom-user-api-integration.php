@@ -22,6 +22,7 @@ class Saucal_Fabio_Mezzomo_API_Integration {
         require_once SAUCAL_FABIO_MEZZOMO_PLUGIN_DIR . 'includes/api-handler.php';
         require_once SAUCAL_FABIO_MEZZOMO_PLUGIN_DIR . 'includes/data-display.php';
         require_once SAUCAL_FABIO_MEZZOMO_PLUGIN_DIR . 'includes/custom-widget.php';
+        require_once SAUCAL_FABIO_MEZZOMO_PLUGIN_DIR . 'classes/class-saucal-fm-user-settings.php';
 
         // Actions and filters
         add_filter( 'woocommerce_account_menu_items', [ $this, 'add_account_tab' ] );
@@ -65,8 +66,11 @@ class Saucal_Fabio_Mezzomo_API_Integration {
     }
 
     public function display_custom_data() {
-        $data_display = new Saucal_Fabio_Mezzomo_Data_Display();
-        $data_display->display_user_data();
+        $userSettings = new Saucal_Fabio_Mezzomo_User_Settings();
+        $userSettings->display_settings_form();
+
+        $dataDisplay = new Saucal_Fabio_Mezzomo_Data_Display();
+        $dataDisplay->display_user_data();
     }
 
     public function register_widget() {

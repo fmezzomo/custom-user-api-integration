@@ -7,14 +7,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Saucal_Fabio_Mezzomo_Data_Display {
 
     public function __construct() {
-        add_shortcode( 'saucal_user_data', [ $this, 'display_user_data' ] );
+        add_shortcode( 'saucal_fm_user_data', [ $this, 'display_user_data' ] );
     }
 
     public function display_user_data() {
         echo '<h3>' . __( 'Custom Data', 'saucal-fabio-mezzomo' ) . '</h3>';
         ?>
         <form method="post" action="">
-            <?php wp_nonce_field( 'saucal_fetch_elements', 'saucal_nonce' ); ?>
+            <?php wp_nonce_field( 'saucal_fm_fetch_elements', 'saucal_nonce' ); ?>
             <label for="element_list">
                 <?php echo __('Enter Elements (comma-separated):', 'saucal-fabio-mezzomo'); ?>
             </label>
@@ -32,8 +32,8 @@ class Saucal_Fabio_Mezzomo_Data_Display {
         return (
             $_SERVER['REQUEST_METHOD'] === 'POST' &&
             isset( $_POST['element_list'] ) &&
-            isset( $_POST['saucal_nonce'] ) &&
-            wp_verify_nonce( $_POST['saucal_nonce'], 'saucal_fetch_elements' )
+            isset( $_POST['saucal_fm_nonce'] ) &&
+            wp_verify_nonce( $_POST['saucal_fm_nonce'], 'saucal_fm_fetch_elements' )
         );
     }
 
