@@ -11,49 +11,58 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-// Define plugin version and constants
-define( 'SAUCAL_FABIO_MEZZOMO_VERSION', '1.0' );
-define( 'SAUCAL_FABIO_MEZZOMO_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+class Saucal_Fabio_Mezzomo_API_Integration {
 
-// Include necessary files
-require_once SAUCAL_FABIO_MEZZOMO_PLUGIN_DIR . 'includes/api-handler.php';
-require_once SAUCAL_FABIO_MEZZOMO_PLUGIN_DIR . 'includes/data-display.php';
+    public function __construct() {
+        // Define plugin version and constants
+        define( 'SAUCAL_FABIO_MEZZOMO_VERSION', '1.0' );
+        define( 'SAUCAL_FABIO_MEZZOMO_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 
-// Register WooCommerce account tab and endpoint
-function saucal_fabio_mezzomo_add_account_tab( $items ) {
-    $new_items = array();
-    foreach ( $items as $key => $value ) {
-        // Add the new menu after Dashboard
-        $new_items[ $key ] = $value;
+        // Include necessary files
+        require_once SAUCAL_FABIO_MEZZOMO_PLUGIN_DIR . 'includes/api-handler.php';
+        require_once SAUCAL_FABIO_MEZZOMO_PLUGIN_DIR . 'includes/data-display.php';
 
-        if ( $key === 'dashboard' ) {
-            $new_items['custom-data-api'] = __( 'Custom Data', 'saucal-fabio-mezzomo' );
-        }
+        // Actions and filters
+        add_filter( 'woocommerce_account_menu_items', [ $this, 'add_account_tab' ] );
+        add_action( 'init', [ $this, 'register_endpoint' ] );
+        add_action( 'woocommerce_account_custom-data-api_endpoint', [ $this, 'display_custom_data' ] );
+
+        // Activation and deactivation Hooks
+        register_activation_hook( __FILE__, [ $this, 'activate' ] );
+        register_deactivation_hook( __FILE__, [ $this, 'deactivate' ] );
     }
 
-    return $new_items;
-}
-add_filter( 'woocommerce_account_menu_items', 'saucal_fabio_mezzomo_add_account_tab' );
+    // Register WooCommerce account tab and endpoint
+    public function add_account_tab( $items ) {
+        $new_items = array();
+        foreach ( $items as $key => $value ) {
+            // Add the new menu after Dashboard
+            $new_items[ $key ] = $value;
 
-function saucal_fabio_mezzomo_register_endpoint() {
-    add_rewrite_endpoint( 'custom-data-api', EP_ROOT | EP_PAGES );
-}
-add_action( 'init', 'saucal_fabio_mezzomo_register_endpoint' );
+            if ( $key === 'dashboard' ) {
+                $new_items['custom-data-api'] = __( 'Custom Data', 'saucal-fabio-mezzomo' );
+            }
+        }
 
-function saucal_fabio_mezzomo_activate() {
-    saucal_fabio_mezzomo_register_endpoint();
-    flush_rewrite_rules();
-}
-register_activation_hook( __FILE__, 'saucal_fabio_mezzomo_activate' );
+        return $new_items;
+    }
 
-// Clean rewrite rules when deactivating
-function saucal_fabio_mezzomo_deactivate() {
-    flush_rewrite_rules();
-}
-register_deactivation_hook( __FILE__, 'saucal_fabio_mezzomo_deactivate' );
+    public function register_endpoint() {
+        add_rewrite_endpoint( 'custom-data-api', EP_ROOT | EP_PAGES );
+    }
 
-// Endpoint content
-function saucal_fabio_mezzomo_custom_data_content() {
-    saucal_fabio_mezzomo_display_user_data();
+    public function activate() {
+        $this->register_endpoint();
+        flush_rewrite_rules();
+    }
+
+    public function deactivate() {
+        flush_rewrite_rules();
+    }
+
+    public function display_custom_data() {
+        saucal_fabio_mezzomo_display_user_data();
+    }
 }
-add_action( 'woocommerce_account_custom-data-api_endpoint', 'saucal_fabio_mezzomo_custom_data_content' );
+
+new Saucal_Fabio_Mezzomo_API_Integration();
