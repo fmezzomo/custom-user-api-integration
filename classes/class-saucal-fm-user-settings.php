@@ -25,7 +25,6 @@ class Saucal_Fabio_Mezzomo_User_Settings {
     }
 
     private function is_form_submitted() {
-        echo '..'.$_SERVER['REQUEST_METHOD'].'..'.isset( $_POST['user_preferences'] ).'...'.isset( $_POST['saucal_fm_nonce'] );
         return (
             $_SERVER['REQUEST_METHOD'] === 'POST' &&
             isset( $_POST['user_preferences'] ) &&

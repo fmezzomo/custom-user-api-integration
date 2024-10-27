@@ -21,7 +21,7 @@ class Saucal_Fabio_Mezzomo_API_Integration {
         // Include necessary files
         require_once SAUCAL_FABIO_MEZZOMO_PLUGIN_DIR . 'includes/api-handler.php';
         require_once SAUCAL_FABIO_MEZZOMO_PLUGIN_DIR . 'includes/data-display.php';
-        require_once SAUCAL_FABIO_MEZZOMO_PLUGIN_DIR . 'includes/custom-widget.php';
+        require_once SAUCAL_FABIO_MEZZOMO_PLUGIN_DIR . 'classes/class-saucal-fm-widget.php';
         require_once SAUCAL_FABIO_MEZZOMO_PLUGIN_DIR . 'classes/class-saucal-fm-user-settings.php';
 
         // Actions and filters
