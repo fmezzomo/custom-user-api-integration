@@ -61,7 +61,8 @@ class Saucal_Fabio_Mezzomo_API_Integration {
     }
 
     public function display_custom_data() {
-        saucal_fabio_mezzomo_display_user_data();
+        $data_display = new Saucal_Fabio_Mezzomo_Data_Display();
+        $data_display->display_user_data();
     }
 }
 
