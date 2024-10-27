@@ -20,7 +20,15 @@ function saucal_fabio_mezzomo_display_user_data() {
         $elements_array = explode( ',', $element_list );
 
         if ( function_exists('fetch_elements_from_api') ) {
-            fetch_elements_from_api($elements_array);
+
+            $api_data = fetch_elements_from_api( $elements_array );
+
+            if ( $api_data ) {
+                echo '<pre>' . esc_html( print_r( $api_data, true ) ) . '</pre>';
+            } else {
+                echo '<p>' . __('No data available.', 'saucal-fabio-mezzomo') . '</p>';
+            }
+
         } else {
             echo "<p>Function fetch_elements_from_api not found.</p>";
         }
