@@ -21,11 +21,15 @@ class Saucal_Fabio_Mezzomo_API_Integration {
         // Include necessary files
         require_once SAUCAL_FABIO_MEZZOMO_PLUGIN_DIR . 'includes/api-handler.php';
         require_once SAUCAL_FABIO_MEZZOMO_PLUGIN_DIR . 'includes/data-display.php';
+        require_once SAUCAL_FABIO_MEZZOMO_PLUGIN_DIR . 'includes/custom-widget.php';
 
         // Actions and filters
         add_filter( 'woocommerce_account_menu_items', [ $this, 'add_account_tab' ] );
         add_action( 'init', [ $this, 'register_endpoint' ] );
         add_action( 'woocommerce_account_custom-data-api_endpoint', [ $this, 'display_custom_data' ] );
+
+        // Register widget
+        add_action( 'widgets_init', [ $this, 'register_widget' ] );
 
         // Activation and deactivation Hooks
         register_activation_hook( __FILE__, [ $this, 'activate' ] );
@@ -63,6 +67,10 @@ class Saucal_Fabio_Mezzomo_API_Integration {
     public function display_custom_data() {
         $data_display = new Saucal_Fabio_Mezzomo_Data_Display();
         $data_display->display_user_data();
+    }
+
+    public function register_widget() {
+        register_widget( 'Saucal_Fabio_Mezzomo_Widget' );
     }
 }
 
