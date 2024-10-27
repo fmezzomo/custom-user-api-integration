@@ -68,8 +68,12 @@ class Saucal_Fabio_Mezzomo_API_Integration {
         $userSettings = new Saucal_Fabio_Mezzomo_User_Settings();
         $userSettings->display_settings_form();
 
-        $dataWidget = new Saucal_Fabio_Mezzomo_Widget();
-        $dataWidget->widget([], null);
+        the_widget('Saucal_Fabio_Mezzomo_Widget', [], [
+            'before_widget' => '<div class="saucal-fm-widget">',
+            'after_widget' => '</div>',
+            'before_title' => '<h3>',
+            'after_title' => '</h3>',
+        ]);
     }
 
     public function register_widget() {
