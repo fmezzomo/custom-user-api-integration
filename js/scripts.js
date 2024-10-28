@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
     const addButton = document.getElementById('add-preference');
     const preferencesContainer = document.getElementById('preferences-container');
+    const form = preferencesContainer.closest('form');
+    const submitButton = form.querySelector('button[type="submit"]');
 
     function addPreferenceField(value = '') {
         const newPreferenceDiv = document.createElement('div');
@@ -27,7 +29,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    const form = preferencesContainer.closest('form');
     form.addEventListener('submit', function(e) {
         const preferenceFields = document.querySelectorAll('input[name="user_preferences[]"]');
         let valid = true;
@@ -41,6 +42,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 field.setCustomValidity('');
             }
         });
+
+        if (valid) {
+            submitButton.disabled = true;
+        }
 
         if (!valid) {
             e.preventDefault();
