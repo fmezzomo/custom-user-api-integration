@@ -64,6 +64,7 @@ class Saucal_Fabio_Mezzomo_User_Settings {
             $userID = get_current_user_id();
 
             $preferences = array_filter($_POST['user_preferences'], function($preference) {
+                $preference = sanitize_text_field($preference);
                 return preg_match('/^[a-zA-Z0-9]+$/', $preference);
             });
 
