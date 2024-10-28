@@ -53,22 +53,23 @@ class Saucal_Fabio_Mezzomo_User_Settings {
     private function is_form_submitted() {
         return (
             $_SERVER['REQUEST_METHOD'] === 'POST' &&
-            isset($_POST['user_preferences']) &&
             isset($_POST['saucal_fm_nonce']) &&
             wp_verify_nonce($_POST['saucal_fm_nonce'], 'saucal_fm_user_preferences')
         );
     }
 
     private function save_user_preferences() {
-        if ( isset( $_POST['user_preferences'] ) ) {
-            $userID = get_current_user_id();
+        $userID = get_current_user_id();
 
+        if ( isset( $_POST['user_preferences'] ) ) {
             $preferences = array_filter($_POST['user_preferences'], function($preference) {
                 $preference = sanitize_text_field($preference);
                 return preg_match('/^[a-zA-Z0-9]+$/', $preference);
             });
 
             update_user_meta($userID, 'saucal_fm_user_preferences', $preferences);
+        } else {
+            delete_user_meta($userID, 'saucal_fm_user_preferences');
         }
     }
 }
