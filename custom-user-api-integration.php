@@ -23,6 +23,8 @@ class Saucal_Fabio_Mezzomo_API_Integration {
         require_once SAUCAL_FABIO_MEZZOMO_PLUGIN_DIR . 'classes/class-saucal-fm-widget.php';
         require_once SAUCAL_FABIO_MEZZOMO_PLUGIN_DIR . 'classes/class-saucal-fm-user-settings.php';
 
+        add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
+
         // Actions and filters
         add_filter( 'woocommerce_account_menu_items', [ $this, 'add_account_tab' ] );
         add_action( 'init', [ $this, 'register_endpoint' ] );
@@ -34,6 +36,17 @@ class Saucal_Fabio_Mezzomo_API_Integration {
         // Activation and deactivation Hooks
         register_activation_hook( __FILE__, [ $this, 'activate' ] );
         register_deactivation_hook( __FILE__, [ $this, 'deactivate' ] );
+    }
+
+    public function enqueue_scripts() {
+        // Register and enqueue the script
+        wp_enqueue_script(
+            'saucal-fm-preferences',
+            plugins_url('js/scripts.js', __FILE__),
+            [],
+            false,
+            true
+        );
     }
 
     // Register WooCommerce account tab and endpoint
