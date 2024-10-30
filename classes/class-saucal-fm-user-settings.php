@@ -6,7 +6,8 @@ class Saucal_Fabio_Mezzomo_User_Settings {
         $user_id = get_current_user_id();
 
         if ($this->is_form_submitted()) {
-            if ($this->save_user_preferences()) {
+            $apiHandler = new Saucal_Fabio_Mezzomo_API_Handler();
+            if ($apiHandler->save_user_preferences()) {
                 echo '<div class="saucal-fm-notice success">' . __('Preferences saved successfully!', 'saucal-fabio-mezzomo') . '</div>';
             } else {
                 echo '<div class="saucal-fm-notice error">' . __('Error saving preferences.', 'saucal-fabio-mezzomo') . '</div>';
@@ -60,23 +61,6 @@ class Saucal_Fabio_Mezzomo_User_Settings {
             isset($_POST['saucal_fm_nonce']) &&
             wp_verify_nonce($_POST['saucal_fm_nonce'], 'saucal_fm_user_preferences')
         );
-    }
-
-    private function save_user_preferences() {
-        $userID = get_current_user_id();
-
-        if ( isset( $_POST['user_preferences'] ) ) {
-            $preferences = array_filter($_POST['user_preferences'], function($preference) {
-                $preference = sanitize_text_field($preference);
-                return preg_match('/^[a-zA-Z0-9]+$/', $preference);
-            });
-
-            return update_user_meta($userID, 'saucal_fm_user_preferences', $preferences);
-        } else {
-            return delete_user_meta($userID, 'saucal_fm_user_preferences');
-        }
-
-        return false;
     }
 }
 
