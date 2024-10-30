@@ -35,7 +35,7 @@ class Saucal_Fabio_Mezzomo_API_Handler {
         ));
 
         if ( is_wp_error( $response ) ) {
-            error_log( 'Erro na requisição da API: ' . $response->get_error_message() );
+            error_log( 'API error: ' . $response->get_error_message() );
             return null;
         }
 
