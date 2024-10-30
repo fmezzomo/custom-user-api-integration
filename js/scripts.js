@@ -8,6 +8,8 @@ class PreferenceManager {
         this.addButton.addEventListener('click', () => this.addPreferenceField());
         this.preferencesContainer.addEventListener('click', (event) => this.removePreferenceField(event));
         this.form.addEventListener('submit', (e) => this.validateForm(e));
+
+        this.preferencesContainer.addEventListener('input', () => this.updateButtonState());
     }
 
     initPreferences(preferences) {
@@ -39,29 +41,37 @@ class PreferenceManager {
         const removeButton = event.target.closest('.remove-preference');
         if (removeButton) {
             removeButton.closest('.preference-field').remove();
+            this.updateButtonState();
         }
+    }
+
+    validateField(field) {
+        const valid = /^[a-zA-Z0-9]+$/.test(field.value);
+        field.setCustomValidity(valid ? '' : 'Please enter only alphanumeric characters.');
+        return valid;
     }
 
     validateForm(e) {
         const preferenceFields = document.querySelectorAll('input[name="user_preferences[]"]');
-        let valid = true;
+        let allValid = true;
 
         preferenceFields.forEach(field => {
-            if (!/^[a-zA-Z0-9]+$/.test(field.value)) {
-                valid = false;
-                field.setCustomValidity('Please enter only alphanumeric characters.');
+            if (!this.validateField(field)) {
                 field.reportValidity();
-            } else {
-                field.setCustomValidity('');
+                allValid = false;
             }
         });
 
-        if (valid) {
-            this.submitButton.disabled = true;
-        }
+        this.submitButton.disabled = !allValid;
 
-        if (!valid) {
+        if (!allValid) {
             e.preventDefault();
         }
+    }
+
+    updateButtonState() {
+        const preferenceFields = document.querySelectorAll('input[name="user_preferences[]"]');
+        let allValid = Array.from(preferenceFields).every(field => this.validateField(field));
+        this.submitButton.disabled = !allValid;
     }
 }
