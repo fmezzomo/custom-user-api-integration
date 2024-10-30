@@ -43,7 +43,7 @@ class Saucal_Fabio_Mezzomo_API_Integration {
         // Register and enqueue the script
         wp_enqueue_script(
             'saucal-fm-preferences',
-            plugins_url('js/scripts.js', __FILE__),
+            plugins_url( 'js/scripts.js', __FILE__ ),
             [],
             false,
             true
@@ -54,17 +54,17 @@ class Saucal_Fabio_Mezzomo_API_Integration {
 
     // Register WooCommerce account tab and endpoint
     public function add_account_tab( $items ) {
-        $new_items = array();
+        $newItems = array();
         foreach ( $items as $key => $value ) {
             // Add the new menu after Dashboard
-            $new_items[ $key ] = $value;
+            $newItems[ $key ] = $value;
 
             if ( $key === 'dashboard' ) {
-                $new_items['custom-data-api'] = __( 'Custom Data', 'saucal-fabio-mezzomo' );
+                $newItems['custom-data-api'] = __( 'Custom Data', 'saucal-fabio-mezzomo' );
             }
         }
 
-        return $new_items;
+        return $newItems;
     }
 
     public function register_endpoint() {
@@ -84,12 +84,14 @@ class Saucal_Fabio_Mezzomo_API_Integration {
         $userSettings = new Saucal_Fabio_Mezzomo_User_Settings();
         $userSettings->display_settings_form();
 
-        the_widget('Saucal_Fabio_Mezzomo_Widget', [], [
+        the_widget(
+            'Saucal_Fabio_Mezzomo_Widget', [], [
             'before_widget' => '<div class="saucal-fm-widget">',
             'after_widget' => '</div>',
             'before_title' => '<h3>',
             'after_title' => '</h3>',
-        ]);
+            ]
+        );
     }
 
     public function register_widget() {

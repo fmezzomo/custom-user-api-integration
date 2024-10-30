@@ -3,30 +3,30 @@
 class Saucal_Fabio_Mezzomo_User_Settings {
 
     public function display_settings_form() {
-        $user_id = get_current_user_id();
+        $userID = get_current_user_id();
 
-        if ($this->is_form_submitted()) {
+        if ( $this->is_form_submitted() ) {
             $apiHandler = new Saucal_Fabio_Mezzomo_API_Handler();
-            if ($apiHandler->save_user_preferences()) {
+            if ( $apiHandler->save_user_preferences() ) {
                 echo '<div class="saucal-fm-notice success">' . __('Preferences saved successfully!', 'saucal-fabio-mezzomo') . '</div>';
             } else {
                 echo '<div class="saucal-fm-notice error">' . __('Error saving preferences.', 'saucal-fabio-mezzomo') . '</div>';
             }
         }
 
-        $preferences = get_user_meta($user_id, 'saucal_fm_user_preferences', true) ?: [];
+        $preferences = get_user_meta( $userID, 'saucal_fm_user_preferences', true ) ?: [];
         ?>
 
         <form method="post" action="" class="saucal-fm-form">
-            <?php wp_nonce_field('saucal_fm_user_preferences', 'saucal_fm_nonce'); ?>
+            <?php wp_nonce_field( 'saucal_fm_user_preferences', 'saucal_fm_nonce' ); ?>
             <div id="preferences-container">
                 <label for="user_preferences">
                     <?php echo __('Enter Your Preferences:', 'saucal-fabio-mezzomo'); ?>
                 </label>
-                <?php if (!empty($preferences)): ?>
-                    <?php foreach ($preferences as $index => $preference): ?>
+                <?php if ( ! empty( $preferences ) ) : ?>
+                    <?php foreach ( $preferences as $preference ) : ?>
                         <div class="preference-field">
-                            <input type="text" name="user_preferences[]" value="<?php echo esc_attr($preference); ?>" required>
+                            <input type="text" name="user_preferences[]" value="<?php echo esc_attr( $preference ); ?>" required>
                             <button type="button" class="remove-preference">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M3 6H5H21" stroke="#e74c3c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -57,9 +57,9 @@ class Saucal_Fabio_Mezzomo_User_Settings {
 
     private function is_form_submitted() {
         return (
-            $_SERVER['REQUEST_METHOD'] === 'POST' &&
-            isset($_POST['saucal_fm_nonce']) &&
-            wp_verify_nonce($_POST['saucal_fm_nonce'], 'saucal_fm_user_preferences')
+            $_SERVER[ 'REQUEST_METHOD' ] === 'POST' &&
+            isset( $_POST[ 'saucal_fm_nonce' ] ) &&
+            wp_verify_nonce( $_POST[ 'saucal_fm_nonce' ], 'saucal_fm_user_preferences' )
         );
     }
 }

@@ -15,7 +15,7 @@ class Saucal_Fabio_Mezzomo_API_Handler {
 
     public function fetch_elements() {
 
-        $userID = get_current_user_id();
+        $userID   = get_current_user_id();
         $elements = $this->fetch_user_preferences( $userID );
 
         if ( ! $elements ) {
@@ -39,7 +39,7 @@ class Saucal_Fabio_Mezzomo_API_Handler {
             return null;
         }
 
-        $body = wp_remote_retrieve_body( $response );
+        $body   = wp_remote_retrieve_body( $response );
         $result = json_decode( $body, true );
 
         return $result;
@@ -62,15 +62,15 @@ class Saucal_Fabio_Mezzomo_API_Handler {
         $userID  = get_current_user_id();
         $updated = false;
 
-        if ( isset( $_POST['user_preferences'] ) ) {
-            $preferences = array_filter($_POST['user_preferences'], function($preference) {
-                $preference = sanitize_text_field($preference);
-                return preg_match('/^[a-zA-Z0-9]+$/', $preference);
+        if ( isset( $_POST[ 'user_preferences' ] ) ) {
+            $preferences = array_filter( $_POST[ 'user_preferences' ], function( $preference ) {
+                $preference = sanitize_text_field( $preference );
+                return preg_match( '/^[a-zA-Z0-9]+$/', $preference );
             });
 
-            $updated = update_user_meta($userID, 'saucal_fm_user_preferences', $preferences);
+            $updated = update_user_meta( $userID, 'saucal_fm_user_preferences', $preferences );
         } else {
-            $updated = delete_user_meta($userID, 'saucal_fm_user_preferences');
+            $updated = delete_user_meta( $userID, 'saucal_fm_user_preferences' );
         }
 
         if ( $updated ) {
