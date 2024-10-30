@@ -1,10 +1,26 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const addButton = document.getElementById('add-preference');
-    const preferencesContainer = document.getElementById('preferences-container');
-    const form = preferencesContainer.closest('form');
-    const submitButton = form.querySelector('button[type="submit"]');
+class PreferenceManager {
+    constructor() {
+        this.addButton = document.getElementById('add-preference');
+        this.preferencesContainer = document.getElementById('preferences-container');
+        this.form = this.preferencesContainer.closest('form');
+        this.submitButton = this.form.querySelector('button[type="submit"]');
 
-    function addPreferenceField(value = '') {
+        this.addButton.addEventListener('click', () => this.addPreferenceField());
+        this.preferencesContainer.addEventListener('click', (event) => this.removePreferenceField(event));
+        this.form.addEventListener('submit', (e) => this.validateForm(e));
+    }
+
+    initPreferences(preferences) {
+        if (preferences.length === 0) {
+            this.addPreferenceField();
+        }
+
+        preferences.forEach(preference => {
+            this.addPreferenceField(preference);
+        });
+    }
+
+    addPreferenceField(value = '') {
         const newPreferenceDiv = document.createElement('div');
         newPreferenceDiv.classList.add('preference-field');
         newPreferenceDiv.innerHTML = `
@@ -16,20 +32,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 </svg>
             </button>
         `;
-        preferencesContainer.appendChild(newPreferenceDiv);
+        this.preferencesContainer.appendChild(newPreferenceDiv);
     }
 
-    addButton.addEventListener('click', function() {
-        addPreferenceField();
-    });
-
-    preferencesContainer.addEventListener('click', function(event) {
-        if (event.target.closest('.remove-preference')) {
-            event.target.closest('.preference-field').remove();
+    removePreferenceField(event) {
+        const removeButton = event.target.closest('.remove-preference');
+        if (removeButton) {
+            removeButton.closest('.preference-field').remove();
         }
-    });
+    }
 
-    form.addEventListener('submit', function(e) {
+    validateForm(e) {
         const preferenceFields = document.querySelectorAll('input[name="user_preferences[]"]');
         let valid = true;
 
@@ -44,11 +57,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         if (valid) {
-            submitButton.disabled = true;
+            this.submitButton.disabled = true;
         }
 
         if (!valid) {
             e.preventDefault();
         }
-    });
-});
+    }
+}
