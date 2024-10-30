@@ -75,7 +75,7 @@ class Saucal_Fabio_Mezzomo_API_Handler {
 
         if ( $updated ) {
             $transientKey = 'user_preferences_' . $userID;
-            set_transient( $transientKey, $preferences, $this->cacheTime );
+            set_transient( $transientKey, isset( $preferences ) ? $preferences : [], $this->cacheTime );
         }
 
         return $updated;

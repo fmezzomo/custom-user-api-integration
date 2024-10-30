@@ -23,29 +23,18 @@ class Saucal_Fabio_Mezzomo_User_Settings {
                 <label for="user_preferences">
                     <?php echo __('Enter Your Preferences:', 'saucal-fabio-mezzomo'); ?>
                 </label>
-                <?php if ( ! empty( $preferences ) ) : ?>
-                    <?php foreach ( $preferences as $preference ) : ?>
-                        <div class="preference-field">
-                            <input type="text" name="user_preferences[]" value="<?php echo esc_attr( $preference ); ?>" required>
-                            <button type="button" class="remove-preference">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M3 6H5H21" stroke="#e74c3c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M8 6V4C8 3.44772 8.44772 3 9 3H15C15.5523 3 16 3.44772 16 4V6M19 6V20C19 20.5523 18.5523 21 18 21H6C5.44772 21 5 20.5523 5 20V6H19Z" stroke="#e74c3c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </button>
-                        </div>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <div class="preference-field">
-                        <input type="text" name="user_preferences[]" required>
-                        <button type="button" class="remove-preference">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M3 6H5H21" stroke="#e74c3c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M8 6V4C8 3.44772 8.44772 3 9 3H15C15.5523 3 16 3.44772 16 4V6M19 6V20C19 20.5523 18.5523 21 18 21H6C5.44772 21 5 20.5523 5 20V6H19Z" stroke="#e74c3c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </button>
-                    </div>
-                <?php endif; ?>
+
+                <div class="preference-field"></div>   
+                <script>
+                    document.addEventListener('DOMContentLoaded', () => {
+                        PreferenceManager = new PreferenceManager();
+                        PreferenceManager.initPreferences(<?php
+                            if ( isset( $preferences ) ) {
+                                echo json_encode( $preferences );
+                            }
+                        ?>);
+                    });
+                </script>                 
             </div>
             <button type="button" id="add-preference">Add Preference</button>
             <button type="submit"><?php echo __('Save Preferences', 'saucal-fabio-mezzomo'); ?></button>
@@ -65,3 +54,5 @@ class Saucal_Fabio_Mezzomo_User_Settings {
 }
 
 new Saucal_Fabio_Mezzomo_User_Settings();
+
+?>
